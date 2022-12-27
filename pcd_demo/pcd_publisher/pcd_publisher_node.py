@@ -39,14 +39,14 @@ class PCDPublisher(Node):
 
         # This rotation matrix is used for visualization purposes. It rotates
         # the point cloud on each timer callback. 
-        self.R = o3d.geometry.get_rotation_matrix_from_xyz([0, 0, np.pi/48])
+        # self.R = o3d.geometry.get_rotation_matrix_from_xyz([0, 0, 0])
 
               
                 
     def timer_callback(self):
         # For visualization purposes, I rotate the point cloud with self.R 
         # to make it spin. 
-        self.points = self.points @ self.R
+        # self.points = self.points @ self.R
         # Here I use the point_cloud() function to convert the numpy array 
         # into a sensor_msgs.PointCloud2 object. The second argument is the 
         # name of the frame the point cloud will be represented in. The default
