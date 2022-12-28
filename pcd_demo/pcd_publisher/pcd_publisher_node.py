@@ -10,6 +10,9 @@ import std_msgs.msg as std_msgs
 import numpy as np
 import open3d as o3d
 
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
 class PCDPublisher(Node):
 
     def __init__(self):
@@ -18,15 +21,34 @@ class PCDPublisher(Node):
         # This executable expectes the first argument to be the path to a 
         # point cloud file. I.e. when you run it with ros:
         # ros2 run pcd_publisher pcd_publisher_node /path/to/ply
-        assert len(sys.argv) > 1, "No ply file given."
-        assert os.path.exists(sys.argv[1]), "File doesn't exist."
-        pcd_path = sys.argv[1]
+
+        # assert len(sys.argv) > 1, "No ply file given."
+        # assert os.path.exists(sys.argv[1]), "File doesn't exist."
+        # pcd_path = sys.argv[1]
+
+        pcd_path = "/home/napster/colcon_ws_squeeze/src/ROS2-Point-Cloud-Demo/resource/Arm - Prop Guard - NEW v2 - 100k.ply"
 
         # I use Open3D to read point clouds and meshes. It's a great library!
         pcd = o3d.io.read_point_cloud(pcd_path)
         # I then convert it into a numpy array.
         self.points = np.asarray(pcd.points)
-        print(self.points.shape)
+        # print(self.points.shape)
+
+        print(len(self.points))
+
+        # fig = plt.figure(figsize=(4,4))
+
+        # ax = fig.add_subplot(111, projection='3d')
+
+        # for i in range(len(self.points)):
+        #     x = self.points[i][0]
+        #     y = self.points[i][1]
+        #     z = self.points[i][2]
+
+        #     ax.scatter(x, y, z, c='b', marker='o')
+
+        # plt.show()
+
         
         # I create a publisher that publishes sensor_msgs.PointCloud2 to the 
         # topic 'pcd'. The value '10' refers to the history_depth, which I 
@@ -39,14 +61,14 @@ class PCDPublisher(Node):
 
         # This rotation matrix is used for visualization purposes. It rotates
         # the point cloud on each timer callback. 
-        # self.R = o3d.geometry.get_rotation_matrix_from_xyz([0, 0, 0])
-
-              
-                
+        # self.R = o3d.geometry.get_rotation_matrix_from_xyz([0, 0, np.pi/4])
+        # self.points = self.points @ self.R
+        # self.points = self.points + np.array([100, 100, 0])
+ 
     def timer_callback(self):
         # For visualization purposes, I rotate the point cloud with self.R 
         # to make it spin. 
-        # self.points = self.points @ self.R
+
         # Here I use the point_cloud() function to convert the numpy array 
         # into a sensor_msgs.PointCloud2 object. The second argument is the 
         # name of the frame the point cloud will be represented in. The default
